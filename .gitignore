@@ -1,0 +1,12 @@
+.env
+node_modules
+
+routes/*
+!routes/authEcom.js
+
+middleware/*
+!middleware/error.js
+!middleware/hash.js
+!middleware/logger.js
+
+controllers/*
