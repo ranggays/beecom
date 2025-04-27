@@ -20,6 +20,10 @@ const User = sequelize.define('user', {
     provider:{
         type: DataTypes.STRING,
         defaultValue: 'local',
+    },
+    role: {
+        type: DataTypes.STRING,
+        defaultValue: 'user',
     }
 },{
     timestamps: true

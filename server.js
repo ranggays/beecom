@@ -4,6 +4,7 @@ import session from 'express-session';
 import passport from 'passport';
 // import passports from './middleware/google-passport.js';
 import authEcom from './routes/authEcom.js';
+import productEcom from './routes/productEcom.js';
 import posts from './routes/posts.js';
 import products from './routes/products.js'
 import users from './routes/users.js';
@@ -15,6 +16,7 @@ import url from 'url';
 // import MongoStore from "connect-mongo";
 import cors from 'cors';
 import sequelize from './db.js';
+import User from './models/userEcom.model.js';
 
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -32,6 +34,8 @@ app.use(cors({
 
 //use static folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/images' ,express.static(path.join(__dirname, 'public/images')));
 
 //use middleware so that we can check / get api
 app.use(express.json());
@@ -75,14 +79,15 @@ app.use(passport.session());
 app.use(logger);
 
 //use routes posts
-app.use('/api/posts', posts);
+// app.use('/api/posts', posts);
 
 //use routes products
-app.use('/api/products', products);
-
-
+// app.use('/api/products', products);
 
 app.use('/auth', authEcom);
+
+app.use('/api', productEcom);
+
 
 sequelize.sync().then(() => {
     console.log('Database connected');
