@@ -5,6 +5,7 @@ import passport from 'passport';
 // import passports from './middleware/google-passport.js';
 import authEcom from './routes/authEcom.js';
 import productEcom from './routes/productEcom.js';
+import cartEcom from './routes/cartEcom.js'
 import posts from './routes/posts.js';
 import products from './routes/products.js'
 import users from './routes/users.js';
@@ -16,8 +17,8 @@ import url from 'url';
 // import MongoStore from "connect-mongo";
 import cors from 'cors';
 import sequelize from './db.js';
-import User from './models/userEcom.model.js';
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,7 +34,11 @@ app.use(cors({
 }));
 
 //use static folder
+//for local
 app.use(express.static(path.join(__dirname, 'public')));
+
+//for ec2
+//app.use(express.static(path.join(__dirname, '..', 'dist')));
 
 app.use('/images' ,express.static(path.join(__dirname, 'public/images')));
 
@@ -88,10 +93,12 @@ app.use('/auth', authEcom);
 
 app.use('/api', productEcom);
 
+app.use('/api', cartEcom);
 
+//untuk ec2 saya tambahkan '0.0.0.0' jika di local error hapus
 sequelize.sync().then(() => {
     console.log('Database connected');
-    app.listen(port, () => {
+    app.listen(port, '0.0.0.0', () => {
         console.log(`server is running on ${port}`)
     })
 })
