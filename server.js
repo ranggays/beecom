@@ -6,6 +6,7 @@ import passport from 'passport';
 import authEcom from './routes/authEcom.js';
 import productEcom from './routes/productEcom.js';
 import cartEcom from './routes/cartEcom.js'
+import orderEcom from './routes/orderEcom.js'
 import posts from './routes/posts.js';
 import products from './routes/products.js'
 import users from './routes/users.js';
@@ -94,6 +95,8 @@ app.use('/auth', authEcom);
 app.use('/api', productEcom);
 
 app.use('/api', cartEcom);
+
+app.use('/api', orderEcom);
 
 //untuk ec2 saya tambahkan '0.0.0.0' jika di local error hapus
 sequelize.sync().then(() => {
