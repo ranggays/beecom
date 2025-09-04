@@ -27,10 +27,11 @@ dotenv.config();
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 const port = process.env.PORT;
 
 const app = express();
+
+app.use(logger);
 
 app.use(cors({
     origin: process.env.CLIENT_URL,
@@ -74,7 +75,6 @@ app.use(passport.session());
 
 
 //use logger
-app.use(logger);
 
 /*
 
