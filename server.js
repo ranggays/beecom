@@ -17,6 +17,7 @@ import dotenv from 'dotenv';
 import Product from './models/productEcom.model.js';
 import Category from './models/categoryEcom.model.js';
 dotenv.config();
+import './ecom/local.js'
 // import passports from './middleware/google-passport.js';
 // import posts from './routes/posts.js';
 // import products from './routes/products.js'
@@ -57,14 +58,19 @@ app.use(cookieParser());
 /*
 
 */
+app.set('trust proxy', 1);
 
 //use session mysql
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: false,
+    rolling: true,
     cookie: {
-        maxAge: 600000
+        maxAge: 600000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     }
 }));
 
