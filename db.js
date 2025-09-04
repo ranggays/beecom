@@ -1,19 +1,24 @@
 // db.js
-// const { Sequelize } = require('sequelize');
 import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 dotenv.config();
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,     // contoh: 'mydb'
-  process.env.DB_USER,     // contoh: 'postgres'
-  process.env.DB_PASS, // contoh: 'yourpassword'
-  {
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 5432,
-    dialect: 'postgres',
-    logging: false,
-  }
-);
+// Cek apakah DATABASE_URL sudah di-set di environment variables
+if (!process.env.DATABASE_URL) {
+  throw new Error("FATAL ERROR: DATABASE_URL is not defined.");
+}
+
+// Gunakan satu connection URL dari Railway
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres',
+  protocol: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false // Diperlukan untuk koneksi ke banyak database cloud
+    }
+  },
+  logging: false,
+});
 
 export default sequelize;
