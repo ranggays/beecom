@@ -1,0 +1,13 @@
+.env
+node_modules
+
+!routes/authEcom.js
+
+!middleware/error.js
+!middleware/hash.js
+!middleware/logger.js
+
+middleware/google-pasport.js
+middleware/local-pasport.js
+
+controllers/*
