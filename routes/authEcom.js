@@ -1,6 +1,6 @@
 import express from "express";
-import passportLocal from "../ecom/local.js";
-import passportGoogle from "../ecom//google.js";
+import "../ecom/local.js";
+import "../ecom//google.js";
 import User from "../models/userEcom.model.js";
 import { hashPass } from "../middleware/hash.js";
 
@@ -31,16 +31,16 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.post('/login', passportLocal.authenticate('local'), (req, res) =>{
+router.post('/login', passport.authenticate('local'), (req, res) =>{
     res.status(200).json({ msg : 'Login Success', user: req.user });
 });
 
-router.get('/google', passportGoogle.authenticate('google', {
+router.get('/google', passport.authenticate('google', {
     scope: ['profile', 'email'],
     prompt: 'select_account',
 }));
 
-router.get('/google/redirect', passportGoogle.authenticate('google', {
+router.get('/google/redirect', passport.authenticate('google', {
     failureRedirect: '/login',
     successRedirect: 'http://localhost:5173/',
 }), (req, res) => {
