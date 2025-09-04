@@ -24,14 +24,19 @@ try {
     })
 
     passport.deserializeUser(async (id, done) => {
+        console.log(`--- DESERIALIZE USER: Mencari user dengan ID: ${id}`);
+
         try {
             const findUser = await User.findByPk(id);
             if(!findUser){
-                done(new Error('USER NOT FOUND'));
+                console.log(`--- DESERIALIZE USER: User dengan ID ${id} TIDAK DITEMUKAN.`);
+                return done(new Error('USER NOT FOUND'));
             }else{
-                done(null, findUser);
+                console.log(`--- DESERIALIZE USER: User ditemukan -> ${findUser.email}`);
+                return done(null, findUser);
             }
         } catch (error) {
+            console.error(`--- DESERIALIZE USER: Gagal mencari user karena error DB:`, error);
             done(error, null);
         }
     })
