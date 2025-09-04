@@ -7,6 +7,7 @@ import { hashPass } from "../middleware/hash.js";
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
+    console.log("Mencoba registrasi dengan data:", req.body);
     try {        
         const { body: itemUser } = req;
         itemUser.password = hashPass(itemUser.password);
@@ -17,7 +18,16 @@ router.post('/register', async (req, res) => {
             res.status(201).json(user);
         }
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        console.error("!!! ERROR SAAT REGISTRASI:", error);
+
+        // 4. Kirim respons error yang lebih informatif (opsional tapi bagus)
+        if (error.name === 'SequelizeUniqueConstraintError') {
+        // Jika email sudah ada
+        return res.status(409).json({ message: 'Email already exists.' });
+        }
+        
+        // Untuk semua error lain, kirim 500
+        res.status(500).json({ message: "An internal server error occurred." });
     }
 });
 
